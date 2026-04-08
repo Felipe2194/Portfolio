@@ -44,10 +44,6 @@ export default function App() {
     document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  function scrollToContact() {
-    document.getElementById('reach')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <>
       {/* ── Preloader ── */}
