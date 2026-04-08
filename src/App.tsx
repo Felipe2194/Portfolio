@@ -1,0 +1,114 @@
+import { useEffect, useState } from 'react'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import OpenLetter from './components/OpenLetter'
+import WhySection from './components/WhySection'
+import Services from './components/Services'
+import Studio from './components/Studio'
+import About from './components/About'
+import Packages from './components/Packages'
+import Journal from './components/Journal'
+import ReachUs from './components/ReachUs'
+import Footer from './components/Footer'
+import ProjectModal from './components/ProjectModal'
+import Preloader from './components/Preloader'
+import FloatingWidget from './components/FloatingWidget'
+import { Project } from './types'
+
+const projects: Project[] = [
+  {
+    id: 'artedietetica',
+    title: 'Arte Dietética',
+    description:
+      'Sitio web para una dietista especializada en la alimentación consciente. Diseño orientado a la calma y la confianza — UI limpia, tipografía cuidada, experiencia fluida desde mobile hasta desktop.',
+    url: 'https://www.artedietetica.com.ar',
+    type: 'live',
+    tags: ['Web Design', 'UI/UX', 'Branding'],
+    year: '2025',
+  },
+]
+
+export default function App() {
+  const [isPreloading, setIsPreloading] = useState(true)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsPreloading(false), 2000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = isPreloading ? 'hidden' : ''
+  }, [isPreloading])
+
+  function scrollToStudio() {
+    document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  function scrollToContact() {
+    document.getElementById('reach')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  return (
+    <>
+      {/* ── Preloader ── */}
+      <Preloader isVisible={isPreloading} />
+
+      <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+        {/* ── Navbar ── */}
+        <Navbar onStudio={scrollToStudio} />
+
+        {/* ── 1. Hero ── */}
+        <Hero onBeginJourney={scrollToStudio} />
+
+        {/* ── Below-fold content ── */}
+        <div className="relative z-10 bg-background">
+
+          {/* ── 2. Open Letter ── */}
+          <div className="border-t border-white/5" />
+          <OpenLetter />
+
+          {/* ── 3. Why Velorah (4-col benefits) ── */}
+          <div className="border-t border-white/5" />
+          <WhySection />
+
+          {/* ── 4. Services (tabbed) ── */}
+          <div id="services" className="border-t border-white/5" />
+          <Services />
+
+          {/* ── 5. Studio (projects) ── */}
+          <div className="border-t border-white/5" />
+          <Studio projects={projects} onOpenProject={setSelectedProject} />
+
+          {/* ── 6. About ── */}
+          <div className="border-t border-white/5" />
+          <About />
+
+          {/* ── 7. Packages / Pricing ── */}
+          <div className="border-t border-white/5" />
+          <Packages onContact={scrollToContact} />
+
+          {/* ── 8. Journal ── */}
+          <div className="border-t border-white/5" />
+          <Journal />
+
+          {/* ── 9. Reach Us ── */}
+          <div className="border-t border-white/5" />
+          <ReachUs />
+
+          {/* ── 10. Footer ── */}
+          <Footer />
+        </div>
+
+        {/* ── Floating contact widget ── */}
+        <FloatingWidget />
+
+        {/* ── Project Modal ── */}
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      </div>
+    </>
+  )
+}
