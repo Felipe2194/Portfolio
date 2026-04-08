@@ -68,13 +68,6 @@ export default function Packages({ onContact }: PackagesProps) {
         whileInView="visible"
         viewport={viewport}
       >
-        <motion.p
-          variants={fadeRiseChild}
-          className="text-xs text-muted-foreground uppercase tracking-widest mb-4"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          Investment
-        </motion.p>
         <motion.h2
           variants={fadeRiseChild}
           className="text-4xl sm:text-6xl font-normal leading-[0.95] mb-4"
