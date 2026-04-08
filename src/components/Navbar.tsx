@@ -9,9 +9,6 @@ interface NavbarProps {
 const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Studio', href: '#studio' },
-  { label: 'Services', href: '#services' },
-  { label: 'About', href: '#about' },
-  { label: 'Journal', href: '#journal' },
   { label: 'Reach Us', href: '#reach' },
 ]
 

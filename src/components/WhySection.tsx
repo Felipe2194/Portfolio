@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Layers, Zap, Code2, Eye } from 'lucide-react'
+import { Layers, Zap, Code2, Eye, Bot } from 'lucide-react'
 import {
   fadeRiseChild,
   staggerContainer,
@@ -32,6 +32,12 @@ const qualities = [
     description:
       'The gap between a good product and a great one lives in the details. Spacing, transitions, edge cases — none of it gets skipped.',
   },
+  {
+    icon: Bot,
+    title: 'AI & Automatización',
+    description:
+      'Busco simplificar y automatizar todo lo que sea posible — aplicando agentes de IA y Skills para potenciar cada proyecto y liberar tiempo para lo que realmente importa.',
+  },
 ]
 
 export default function WhySection() {
@@ -61,7 +67,7 @@ export default function WhySection() {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
         variants={staggerContainerSlow}
         initial="hidden"
         whileInView="visible"

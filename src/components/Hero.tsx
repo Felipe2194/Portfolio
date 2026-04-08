@@ -117,6 +117,23 @@ export default function Hero({ onBeginJourney }: HeroProps) {
         className="relative z-10 flex flex-col items-center px-6 pt-24 pb-20"
         style={{ y: textY, opacity: contentOpacity }}
       >
+        <motion.div
+          className="mb-6"
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, ease, delay: 1.5 }}
+        >
+          <img
+            src="/Caricatura%20simple..png"
+            alt="Felipe Giovanardi"
+            className="w-24 h-24 rounded-full object-cover object-top"
+            style={{
+              border: '2px solid rgba(255,255,255,0.15)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            }}
+          />
+        </motion.div>
+
         <motion.p
           className="text-xs text-white/50 uppercase tracking-[0.25em] mb-6"
           style={{ fontFamily: "'Inter', sans-serif" }}

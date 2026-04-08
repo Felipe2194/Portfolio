@@ -3,10 +3,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import OpenLetter from './components/OpenLetter'
 import WhySection from './components/WhySection'
-import Services from './components/Services'
 import Studio from './components/Studio'
-import About from './components/About'
-import Journal from './components/Journal'
 import ReachUs from './components/ReachUs'
 import Footer from './components/Footer'
 import ProjectModal from './components/ProjectModal'
@@ -67,23 +64,11 @@ export default function App() {
           <div className="border-t border-white/5" />
           <WhySection />
 
-          {/* ── 4. Services (tabbed) ── */}
-          <div id="services" className="border-t border-white/5" />
-          <Services />
-
-          {/* ── 5. Studio (projects) ── */}
+          {/* ── 4. Studio (projects) ── */}
           <div className="border-t border-white/5" />
           <Studio projects={projects} onOpenProject={setSelectedProject} />
 
-          {/* ── 6. About ── */}
-          <div className="border-t border-white/5" />
-          <About />
-
-          {/* ── 7. Journal ── */}
-          <div className="border-t border-white/5" />
-          <Journal />
-
-          {/* ── 9. Reach Us ── */}
+          {/* ── 5. Reach Us ── */}
           <div className="border-t border-white/5" />
           <ReachUs />
 
