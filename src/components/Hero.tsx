@@ -1,18 +1,27 @@
-import { useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ease } from '../animations'
 
-const VIDEO_SRC = '/ascii-art.mp4'
-const PLAYBACK_RATE = 0.72
-const CROSSFADE_BEFORE_END = 2.8 // s antes del final para iniciar crossfade
-const CROSSFADE_DURATION = 2600  // ms que dura la transición
+const VIDEO_SRC      = '/ascii-art.mp4'
+const PLAYBACK_RATE  = 0.5   // 0.5 = video de 8s dura 16s reales; valor que los navegadores optimizan
+const PRELOAD_AHEAD  = 5     // media-segundos antes del final para hacer seek en el inactivo
+const FADE_AHEAD     = 3.5   // media-segundos antes del final para arrancar el crossfade
+const FADE_MS        = 3000  // duración del crossfade en ms de reloj real
 
 interface HeroProps {
   onBeginJourney: () => void
 }
 
+// Estilos GPU para los videos — declarados fuera del componente para no recrearlos
+const videoStyle: React.CSSProperties = {
+  willChange: 'opacity',
+  transform: 'translateZ(0)',
+  backfaceVisibility: 'hidden',
+  WebkitBackfaceVisibility: 'hidden',
+}
+
 export default function Hero({ onBeginJourney }: HeroProps) {
-  const ref = useRef<HTMLElement>(null)
+  const ref       = useRef<HTMLElement>(null)
   const videoARef = useRef<HTMLVideoElement>(null)
   const videoBRef = useRef<HTMLVideoElement>(null)
 
@@ -21,7 +30,7 @@ export default function Hero({ onBeginJourney }: HeroProps) {
     offset: ['start start', 'end start'],
   })
 
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-28%'])
+  const textY          = useTransform(scrollYProgress, [0, 1], ['0%', '-28%'])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   useEffect(() => {
@@ -29,77 +38,103 @@ export default function Hero({ onBeginJourney }: HeroProps) {
     const b = videoBRef.current
     if (!a || !b) return
 
-    // Forzar decodificación en GPU
-    a.playbackRate = PLAYBACK_RATE
-    b.playbackRate = PLAYBACK_RATE
-
-    // Pre-buffering: cargar el video inactivo desde el primer frame
-    b.load()
-
-    let active: HTMLVideoElement = a
-    let inactive: HTMLVideoElement = b
-    let isFading = false
-    let prebuffered = false
+    // ── Estado del ciclo ──────────────────────────────────────────────────
+    type State = 'playing' | 'preloading' | 'fading'
+    let state: State = 'playing'
+    let activeEl: HTMLVideoElement   = a
+    let inactiveEl: HTMLVideoElement = b
+    let inactiveReady = false
+    let fadeStartMs   = 0
     let rafId: number
 
-    const setOpacity = (el: HTMLVideoElement, val: number) => {
-      el.style.opacity = String(val)
+    // Limpia el listener anterior si se vuelve a llamar preloadInactive
+    let seekedCleanup: (() => void) | null = null
+
+    // ── Prepara el video inactivo: seek a 0 y espera que el frame esté listo
+    const preloadInactive = () => {
+      state = 'preloading'
+      inactiveReady = false
+
+      // Limpia listener previo si hubiera
+      if (seekedCleanup) { seekedCleanup(); seekedCleanup = null }
+
+      const onSeeked = () => {
+        inactiveReady = true
+        seekedCleanup = null
+      }
+      inactiveEl.addEventListener('seeked', onSeeked, { once: true })
+      seekedCleanup = () => inactiveEl.removeEventListener('seeked', onSeeked)
+
+      inactiveEl.playbackRate = PLAYBACK_RATE
+      // Seek a 0.05s en lugar de 0 para garantizar que siempre se dispare 'seeked'
+      inactiveEl.currentTime = 0.05
     }
 
+    // ── Loop principal a 60 fps ───────────────────────────────────────────
     const tick = (now: number) => {
-      const dur = active.duration
+      const dur = activeEl.duration
 
-      if (!isFading && dur && isFinite(dur)) {
-        const remaining = dur - active.currentTime
+      if (isFinite(dur) && dur > 0) {
+        const remaining = dur - activeEl.currentTime
 
-        // Pre-buffering: seek el inactivo a 0 con tiempo de sobra
-        if (!prebuffered && remaining < CROSSFADE_BEFORE_END + 1) {
-          inactive.currentTime = 0
-          prebuffered = true
+        // 1. Iniciar precarga del video inactivo
+        if (state === 'playing' && remaining < PRELOAD_AHEAD) {
+          preloadInactive()
         }
 
-        // Arrancar crossfade
-        if (remaining < CROSSFADE_BEFORE_END) {
-          isFading = true
-          prebuffered = false
-
-          inactive.play().catch(() => {})
-
-          const fadeStart = now
-          const from = active
-          const to = inactive
-
-          // Swap referencias para el próximo ciclo
-          active = to
-          inactive = from
-
-          const fadeTick = (t: number) => {
-            const progress = Math.min((t - fadeStart) / CROSSFADE_DURATION, 1)
-            setOpacity(from, 1 - progress)
-            setOpacity(to, progress)
-
-            if (progress < 1) {
-              rafId = requestAnimationFrame(fadeTick)
-            } else {
-              setOpacity(from, 0)
-              setOpacity(to, 1)
-              from.pause()
-              isFading = false
-              rafId = requestAnimationFrame(tick)
-            }
+        // 2. Arrancar crossfade cuando el inactivo ya tiene frame listo
+        if (state === 'preloading' && remaining < FADE_AHEAD) {
+          if (inactiveReady) {
+            // Inactivo listo → fade normal
+            state = 'fading'
+            fadeStartMs = now
+            inactiveEl.play().catch(() => {})
+          } else if (remaining < 0.4) {
+            // Fallback de emergencia: fade de todas formas para evitar freeze negro
+            state = 'fading'
+            fadeStartMs = now
+            inactiveEl.play().catch(() => {})
           }
+        }
+      }
 
-          rafId = requestAnimationFrame(fadeTick)
-          return
+      // 3. Animar opacidades durante el fade
+      if (state === 'fading') {
+        const p = Math.min((now - fadeStartMs) / FADE_MS, 1)
+        // from + to siempre suman 1 → nunca hay hueco transparente
+        activeEl.style.opacity   = String(1 - p)
+        inactiveEl.style.opacity = String(p)
+
+        if (p >= 1) {
+          // Completado: el inactivo toma el control
+          activeEl.style.opacity   = '0'
+          inactiveEl.style.opacity = '1'
+          activeEl.pause()
+          activeEl.currentTime = 0  // resetear para el próximo ciclo (sin seek visible)
+
+          // Swap referencias
+          const tmp = activeEl
+          activeEl   = inactiveEl
+          inactiveEl = tmp
+
+          state = 'playing'
         }
       }
 
       rafId = requestAnimationFrame(tick)
     }
 
+    // ── Arranque ──────────────────────────────────────────────────────────
+    a.playbackRate = PLAYBACK_RATE
+    // Video B empieza cargado pero no reproduciéndose, opacidad 0
+    b.style.opacity = '0'
+
     rafId = requestAnimationFrame(tick)
 
-    return () => cancelAnimationFrame(rafId)
+    return () => {
+      cancelAnimationFrame(rafId)
+      if (seekedCleanup) seekedCleanup()
+    }
   }, [])
 
   return (
@@ -118,12 +153,7 @@ export default function Hero({ onBeginJourney }: HeroProps) {
           muted
           playsInline
           preload="auto"
-          style={{
-            opacity: 1,
-            willChange: 'opacity',
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden',
-          }}
+          style={{ ...videoStyle, opacity: 1 }}
         >
           <source src={VIDEO_SRC} type="video/mp4" />
         </video>
@@ -133,16 +163,12 @@ export default function Hero({ onBeginJourney }: HeroProps) {
           muted
           playsInline
           preload="auto"
-          style={{
-            opacity: 0,
-            willChange: 'opacity',
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden',
-          }}
+          style={{ ...videoStyle, opacity: 0 }}
         >
           <source src={VIDEO_SRC} type="video/mp4" />
         </video>
-        {/* Scrim leve para no apagar el brillo del video */}
+
+        {/* Scrim */}
         <div className="absolute inset-0 bg-black/10" />
       </div>
 
@@ -153,10 +179,7 @@ export default function Hero({ onBeginJourney }: HeroProps) {
       >
         <motion.h1
           className="text-5xl sm:text-7xl md:text-8xl font-normal leading-[0.95] max-w-7xl"
-          style={{
-            fontFamily: "'Instrument Serif', serif",
-            letterSpacing: '-2.46px',
-          }}
+          style={{ fontFamily: "'Instrument Serif', serif", letterSpacing: '-2.46px' }}
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease, delay: 1.9 }}
@@ -164,9 +187,7 @@ export default function Hero({ onBeginJourney }: HeroProps) {
           Where{' '}
           <em className="not-italic text-muted-foreground">dreams</em>{' '}
           rise{' '}
-          <em className="not-italic text-muted-foreground">
-            through the silence.
-          </em>
+          <em className="not-italic text-muted-foreground">through the silence.</em>
         </motion.h1>
 
         <motion.p

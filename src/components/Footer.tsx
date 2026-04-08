@@ -1,60 +1,170 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter } from 'lucide-react'
+import { Instagram, Twitter, Linkedin } from 'lucide-react'
 import { fadeIn, staggerContainer, viewport } from '../animations'
 
-const links = {
-  work: [
-    { label: 'Studio', href: '#studio' },
-    { label: 'Services', href: '#services' },
-    { label: 'Packages', href: '#pricing' },
-  ],
-  company: [
-    { label: 'About', href: '#about' },
-    { label: 'Journal', href: '#journal' },
-    { label: 'Reach Us', href: '#reach' },
-  ],
-  legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-  ],
-}
+const menuLinks = [
+  { label: 'Studio',   href: '#studio'   },
+  { label: 'Services', href: '#services' },
+  { label: 'Packages', href: '#pricing'  },
+  { label: 'About',    href: '#about'    },
+  { label: 'Journal',  href: '#journal'  },
+  { label: 'Reach Us', href: '#reach'    },
+]
 
 const social = [
-  { icon: Github, label: 'GitHub', href: 'https://github.com' },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com' },
-  { icon: Twitter, label: 'Twitter', href: 'https://twitter.com' },
+  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com' },
+  { icon: Twitter,   label: 'Twitter',   href: 'https://twitter.com'   },
+  { icon: Linkedin,  label: 'LinkedIn',  href: 'https://linkedin.com'  },
 ]
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+  const [sent,  setSent]  = useState(false)
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email.trim()) return
+    setSent(true)
+    setEmail('')
+  }
+
   return (
-    <footer className="relative z-10 border-t border-white/8 bg-background">
+    <footer className="relative overflow-hidden">
+
+      {/* ── Background image ───────────────────────────────────────── */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/footer-bg.jpg"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-cover object-bottom"
+          style={{ transform: 'translateZ(0)' }}
+        />
+        {/* Gradient overlay: strong top darkness, lighter at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/75" />
+        {/* Subtle vignette on sides */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+      </div>
+
+      {/* ── Main content ───────────────────────────────────────────── */}
       <motion.div
-        className="px-8 py-16 max-w-7xl mx-auto"
+        className="relative z-10 max-w-7xl mx-auto px-8 pt-20 pb-10"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={viewport}
       >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          {/* Brand column */}
-          <motion.div variants={fadeIn} className="flex flex-col gap-4 md:col-span-1">
+        {/* 4-column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_2.5fr_1.5fr] gap-12 pb-16">
+
+          {/* ── Col 1: Brand ── */}
+          <motion.div variants={fadeIn} className="flex flex-col gap-5">
             <a
               href="#home"
-              className="text-2xl tracking-tight text-foreground"
+              className="text-3xl text-white tracking-tight"
               style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              Velorah<sup className="text-xs">®</sup>
+              Velorah<sup className="text-sm">®</sup>
             </a>
             <p
-              className="text-sm text-muted-foreground leading-relaxed max-w-xs"
+              className="text-sm text-white/60 leading-relaxed max-w-[240px]"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
-              A design & development studio building digital products with
-              intention.
+              A design &amp; development studio building digital products with
+              intention and craft — where silence shapes the work.
+            </p>
+          </motion.div>
+
+          {/* ── Col 2: Menu ── */}
+          <motion.div variants={fadeIn} className="flex flex-col gap-5">
+            <p
+              className="text-xs text-white/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Menu
+            </p>
+            <ul className="flex flex-col gap-3">
+              {menuLinks.map((l) => (
+                <li key={l.label}>
+                  <a
+                    href={l.href}
+                    className="text-sm text-white/70 hover:text-white transition-colors duration-200"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* ── Col 3: Newsletter ── */}
+          <motion.div variants={fadeIn} className="flex flex-col gap-5">
+            <p
+              className="text-xs text-white/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Newsletter
             </p>
 
-            {/* Social icons */}
-            <div className="flex items-center gap-4 mt-2">
+            {sent ? (
+              <p
+                className="text-sm text-white/80"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                You're in. We'll be in touch.
+              </p>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex gap-2 w-full max-w-sm">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email"
+                  required
+                  className="
+                    flex-1 min-w-0 px-4 py-2.5 rounded-full
+                    bg-white/10 border border-white/15
+                    text-sm text-white placeholder:text-white/35
+                    focus:outline-none focus:border-white/40 focus:bg-white/15
+                    transition-all duration-200
+                  "
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                />
+                <button
+                  type="submit"
+                  className="
+                    shrink-0 px-5 py-2.5 rounded-full
+                    bg-white text-black text-sm font-medium
+                    hover:bg-white/90 active:scale-95
+                    transition-all duration-200
+                  "
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Subscribe
+                </button>
+              </form>
+            )}
+
+            <p
+              className="text-xs text-white/40 leading-relaxed max-w-[280px]"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Occasional insights on design, craft, and the quiet work behind
+              great digital experiences.
+            </p>
+          </motion.div>
+
+          {/* ── Col 4: Social Media ── */}
+          <motion.div variants={fadeIn} className="flex flex-col gap-5">
+            <p
+              className="text-xs text-white/40 uppercase tracking-widest"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Social Media
+            </p>
+            <div className="flex items-center gap-4">
               {social.map((s) => (
                 <a
                   key={s.label}
@@ -62,101 +172,48 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                  className="
+                    w-10 h-10 rounded-full
+                    border border-white/20
+                    flex items-center justify-center
+                    text-white/60 hover:text-white hover:border-white/50
+                    transition-all duration-200
+                  "
                 >
-                  <s.icon size={16} />
+                  <s.icon size={15} />
                 </a>
               ))}
             </div>
           </motion.div>
-
-          {/* Work links */}
-          <motion.div variants={fadeIn} className="flex flex-col gap-4">
-            <p
-              className="text-xs text-muted-foreground uppercase tracking-widest"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Work
-            </p>
-            <ul className="flex flex-col gap-3">
-              {links.work.map((l) => (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-200"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Company links */}
-          <motion.div variants={fadeIn} className="flex flex-col gap-4">
-            <p
-              className="text-xs text-muted-foreground uppercase tracking-widest"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Studio
-            </p>
-            <ul className="flex flex-col gap-3">
-              {links.company.map((l) => (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-200"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Legal links */}
-          <motion.div variants={fadeIn} className="flex flex-col gap-4">
-            <p
-              className="text-xs text-muted-foreground uppercase tracking-widest"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Legal
-            </p>
-            <ul className="flex flex-col gap-3">
-              {links.legal.map((l) => (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-200"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
         </div>
 
-        {/* Bottom bar */}
+        {/* ── Bottom bar ─────────────────────────────────────────────── */}
         <motion.div
           variants={fadeIn}
-          className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-16 pt-8 border-t border-white/8"
+          className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-white/10"
         >
           <p
-            className="text-xs text-muted-foreground"
+            className="text-xs text-white/35"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            © 2026 Velorah<sup className="text-xs">®</sup>. All rights reserved.
+            © 2026 Velorah<sup>®</sup>. All rights reserved.
           </p>
-          <p
-            className="text-xs text-muted-foreground"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Built with intention.
-          </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="#"
+              className="text-xs text-white/35 hover:text-white/70 transition-colors duration-200"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="#"
+              className="text-xs text-white/35 hover:text-white/70 transition-colors duration-200"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Terms of Service
+            </a>
+          </div>
         </motion.div>
       </motion.div>
     </footer>
