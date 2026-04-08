@@ -106,7 +106,7 @@ export default function OpenLetter() {
           real work that reflects how I approach software development. I'm
           proudly from Argentina and study Systems Engineering at{' '}
           <em className="not-italic text-foreground">UTN</em>{' '}
-          (Universidad Tecnológica Nacional). I build software the way I believe
+          (National Technological University). I build software the way I believe
           it should be built: clean, deliberate, and worth the user's attention.
         </motion.p>
 

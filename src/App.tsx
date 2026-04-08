@@ -15,7 +15,7 @@ const projects: Project[] = [
     id: 'artedietetica',
     title: 'Arte Dietética',
     description:
-      'Sitio web para una dietista especializada en la alimentación consciente. Diseño orientado a la calma y la confianza — UI limpia, tipografía cuidada, experiencia fluida desde mobile hasta desktop.',
+      'Website for a dietitian specialized in mindful eating. Design focused on calm and trust — clean UI, careful typography, smooth experience from mobile to desktop.',
     url: 'https://www.artedietetica.com.ar',
     type: 'live',
     tags: ['Web Design', 'UI/UX', 'Branding'],
@@ -25,7 +25,7 @@ const projects: Project[] = [
     id: 'elcentinela',
     title: 'El Centinela',
     description:
-      'Landing page para una empresa de seguridad privada. Diseño que transmite confianza, solidez y profesionalismo — comunicando sus servicios con claridad y presencia visual fuerte.',
+      'Landing page for a private security company. Design that conveys trust, solidity and professionalism — communicating their services with clarity and strong visual presence.',
     url: 'https://elcentinela.online/',
     type: 'live',
     tags: ['Landing Page', 'Web Design', 'UI/UX'],

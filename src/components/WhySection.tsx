@@ -34,9 +34,9 @@ const qualities = [
   },
   {
     icon: Bot,
-    title: 'AI & Automatización',
+    title: 'AI & Automation',
     description:
-      'Busco simplificar y automatizar todo lo que sea posible — aplicando agentes de IA y Skills para potenciar cada proyecto y liberar tiempo para lo que realmente importa.',
+      'I look to simplify and automate everything I can — applying AI agents and Skills to power up each project and free up time for what truly matters.',
   },
 ]
 
