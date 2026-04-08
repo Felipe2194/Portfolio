@@ -60,7 +60,7 @@ export default function App() {
         <Navbar onStudio={scrollToStudio} />
 
         {/* ── 1. Hero ── */}
-        <Hero onBeginJourney={scrollToStudio} />
+        <Hero />
 
         {/* ── Below-fold content ── */}
         <div className="relative z-10 bg-background">

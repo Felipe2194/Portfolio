@@ -8,10 +8,6 @@ const PRELOAD_AHEAD  = 5
 const FADE_AHEAD     = 3.5
 const FADE_MS        = 3000
 
-interface HeroProps {
-  onBeginJourney: () => void
-}
-
 const videoStyle: React.CSSProperties = {
   willChange: 'opacity',
   transform: 'translateZ(0)',
@@ -19,7 +15,7 @@ const videoStyle: React.CSSProperties = {
   WebkitBackfaceVisibility: 'hidden',
 }
 
-export default function Hero({ onBeginJourney }: HeroProps) {
+export default function Hero() {
   const ref       = useRef<HTMLElement>(null)
   const videoARef = useRef<HTMLVideoElement>(null)
   const videoBRef = useRef<HTMLVideoElement>(null)
