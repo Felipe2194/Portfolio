@@ -27,27 +27,38 @@ export default function ReachUs() {
     e.preventDefault()
     setStatus('loading')
 
+    const key = import.meta.env.VITE_WEB3FORMS_KEY
+    if (!key) {
+      console.error('[ReachUs] VITE_WEB3FORMS_KEY is not defined. Restart the dev server after adding .env.local')
+      setStatus('error')
+      return
+    }
+
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          access_key: key,
           subject: `Portfolio contact from ${formData.name}`,
-          from_name: formData.name,
+          name: formData.name,
           email: formData.email,
           message: formData.message,
         }),
       })
 
       const data = await res.json()
+      console.info('[ReachUs] Web3Forms response:', data)
+
       if (data.success) {
         setStatus('sent')
         setFormData({ name: '', email: '', message: '' })
       } else {
+        console.error('[ReachUs] Submission failed:', data.message)
         setStatus('error')
       }
-    } catch {
+    } catch (err) {
+      console.error('[ReachUs] Network error:', err)
       setStatus('error')
     }
   }
