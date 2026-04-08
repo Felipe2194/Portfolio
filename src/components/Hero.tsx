@@ -135,7 +135,7 @@ export default function Hero({ onBeginJourney }: HeroProps) {
         </motion.div>
 
         <motion.p
-          className="text-xs text-white/80 uppercase tracking-[0.25em] mb-6"
+          className="text-xs text-white uppercase tracking-[0.25em] mb-6"
           style={{ fontFamily: "'Inter', sans-serif" }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -151,23 +151,21 @@ export default function Hero({ onBeginJourney }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease, delay: 1.9 }}
         >
-          Ingeniero Argentino
+          Argentine Engineer
           <br />
-          <em className="not-italic text-white/80">en proceso.</em>
+          <em className="not-italic text-white/80">in progress.</em>
         </motion.h1>
 
-        <motion.button
-          onClick={onBeginJourney}
-          className="liquid-glass rounded-full px-14 py-5 text-base text-foreground mt-12 cursor-pointer"
+        <motion.p
+          className="text-white/85 text-base sm:text-lg max-w-xl mt-8 leading-relaxed text-center"
           style={{ fontFamily: "'Inter', sans-serif" }}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease, delay: 2.2 }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
+          transition={{ duration: 0.75, ease, delay: 2.05 }}
         >
-          View My Work
-        </motion.button>
+          Systems Engineering student building real software — clean code,
+          thoughtful design, and genuine care for the craft.
+        </motion.p>
 
         <motion.div
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
