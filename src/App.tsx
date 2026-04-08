@@ -22,6 +22,16 @@ const projects: Project[] = [
     tags: ['Web Design', 'UI/UX', 'Branding'],
     year: '2025',
   },
+  {
+    id: 'elcentinela',
+    title: 'El Centinela',
+    description:
+      'Landing page para una empresa de seguridad privada. Diseño que transmite confianza, solidez y profesionalismo — comunicando sus servicios con claridad y presencia visual fuerte.',
+    url: 'https://elcentinela.online/',
+    type: 'live',
+    tags: ['Landing Page', 'Web Design', 'UI/UX'],
+    year: '2025',
+  },
 ]
 
 export default function App() {
