@@ -43,6 +43,13 @@ export default function Studio({ projects, onOpenProject }: StudioProps) {
         >
           Projects
         </motion.h2>
+        <motion.p
+          variants={fadeRiseChild}
+          className="text-sm text-muted-foreground mt-5 max-w-sm leading-relaxed"
+          style={{ fontFamily: "'Inter', sans-serif" }}
+        >
+          More on the way — I'm focused on building more and overthinking less.
+        </motion.p>
       </motion.div>
 
       {/* Cards grid */}

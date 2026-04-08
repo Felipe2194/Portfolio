@@ -11,16 +11,45 @@ import {
 } from '../animations'
 
 const fields = [
-  { id: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
-  { id: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
+  { id: 'name',    label: 'Name',    type: 'text',  placeholder: 'Your name'      },
+  { id: 'email',   label: 'Email',   type: 'email', placeholder: 'your@email.com' },
 ] as const
 
 export default function ReachUs() {
-  const [status, setStatus] = useState<'idle' | 'sent'>('idle')
+  const [status, setStatus]   = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setStatus('sent')
+    setStatus('loading')
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          subject: `Portfolio contact from ${formData.name}`,
+          from_name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setStatus('sent')
+        setFormData({ name: '', email: '', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -43,16 +72,11 @@ export default function ReachUs() {
           <motion.h2
             variants={fadeRiseChild}
             className="text-4xl sm:text-6xl font-normal leading-[0.95] mb-6"
-            style={{
-              fontFamily: "'Instrument Serif', serif",
-              letterSpacing: '-1.5px',
-            }}
+            style={{ fontFamily: "'Instrument Serif', serif", letterSpacing: '-1.5px' }}
           >
             Let's build
             <br />
-            <em className="not-italic text-muted-foreground">
-              something quiet.
-            </em>
+            <em className="not-italic text-muted-foreground">something quiet.</em>
           </motion.h2>
           <motion.p
             variants={fadeRiseChild}
@@ -94,6 +118,14 @@ export default function ReachUs() {
               >
                 I'll be in touch soon.
               </motion.p>
+              <motion.button
+                variants={fadeRiseChild}
+                onClick={() => setStatus('idle')}
+                className="mt-2 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Send another
+              </motion.button>
             </motion.div>
           ) : (
             <motion.form
@@ -104,11 +136,7 @@ export default function ReachUs() {
               animate="visible"
             >
               {fields.map((field) => (
-                <motion.div
-                  key={field.id}
-                  variants={fadeIn}
-                  className="flex flex-col gap-2"
-                >
+                <motion.div key={field.id} variants={fadeIn} className="flex flex-col gap-2">
                   <label
                     htmlFor={field.id}
                     className="text-xs text-muted-foreground uppercase tracking-widest"
@@ -120,8 +148,11 @@ export default function ReachUs() {
                     id={field.id}
                     type={field.type}
                     placeholder={field.placeholder}
+                    value={formData[field.id]}
+                    onChange={handleChange}
                     required
-                    className="bg-transparent border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-white/20 outline-none focus:border-white/30 transition-colors duration-200"
+                    disabled={status === 'loading'}
+                    className="bg-transparent border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-white/20 outline-none focus:border-white/30 transition-colors duration-200 disabled:opacity-50"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   />
                 </motion.div>
@@ -139,22 +170,35 @@ export default function ReachUs() {
                   id="message"
                   rows={4}
                   placeholder="Tell me about your project..."
+                  value={formData.message}
+                  onChange={handleChange}
                   required
-                  className="bg-transparent border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-white/20 outline-none focus:border-white/30 transition-colors duration-200 resize-none"
+                  disabled={status === 'loading'}
+                  className="bg-transparent border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-white/20 outline-none focus:border-white/30 transition-colors duration-200 resize-none disabled:opacity-50"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 />
               </motion.div>
 
+              {status === 'error' && (
+                <p
+                  className="text-xs text-red-400/80"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  Something went wrong. Please try again.
+                </p>
+              )}
+
               <motion.button
                 type="submit"
                 variants={fadeRiseChild}
-                className="liquid-glass rounded-full px-8 py-3.5 text-sm text-foreground mt-2 cursor-pointer"
+                disabled={status === 'loading'}
+                className="liquid-glass rounded-full px-8 py-3.5 text-sm text-foreground mt-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{ fontFamily: "'Inter', sans-serif" }}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: status === 'loading' ? 1 : 1.04 }}
+                whileTap={{ scale: status === 'loading' ? 1 : 0.97 }}
                 transition={{ duration: 0.2, ease }}
               >
-                Send Message
+                {status === 'loading' ? 'Sending...' : 'Send Message'}
               </motion.button>
             </motion.form>
           )}

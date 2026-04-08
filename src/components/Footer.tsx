@@ -15,7 +15,7 @@ const social = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden">
+    <footer className="relative overflow-hidden min-h-[420px]">
 
       {/* Background */}
       <div className="absolute inset-0 z-0">
@@ -23,11 +23,11 @@ export default function Footer() {
           src="/footer-bg.jpg"
           alt=""
           aria-hidden="true"
-          className="w-full h-full object-cover object-bottom"
+          className="w-full h-full object-cover object-center sm:object-bottom"
           style={{ transform: 'translateZ(0)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/75" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
       </div>
 
       {/* Content */}
