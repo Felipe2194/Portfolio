@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ease } from '../animations'
 
-const VIDEO_SRC      = '/ascii-art.mp4'
+const VIDEO_SRC      = '/hero-video.mp4'
 const PLAYBACK_RATE  = 0.5   // 0.5 = video de 8s dura 16s reales; valor que los navegadores optimizan
 const PRELOAD_AHEAD  = 5     // media-segundos antes del final para hacer seek en el inactivo
 const FADE_AHEAD     = 3.5   // media-segundos antes del final para arrancar el crossfade
