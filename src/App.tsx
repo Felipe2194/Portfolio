@@ -70,7 +70,7 @@ export default function App() {
           <div className="border-t border-white/5" />
           <OpenLetter />
 
-          {/* ── 3. Why Velorah (4-col benefits) ── */}
+          {/* ── 3. Why (4-col benefits) ── */}
           <div className="border-t border-white/5" />
           <WhySection />
 

@@ -43,7 +43,7 @@ export default function Navbar({ onStudio }: NavbarProps) {
           className="text-2xl tracking-tight text-foreground select-none"
           style={{ fontFamily: "'Instrument Serif', serif" }}
         >
-          Velorah<sup className="text-xs">®</sup>
+          Portfolio
         </a>
 
         {/* Nav links — desktop */}

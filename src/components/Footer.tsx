@@ -3,12 +3,9 @@ import { Github, Linkedin } from 'lucide-react'
 import { fadeIn, staggerContainer, viewport } from '../animations'
 
 const menuLinks = [
-  { label: 'Home',     href: '#home'     },
-  { label: 'Studio',   href: '#studio'   },
-  { label: 'Services', href: '#services' },
-  { label: 'About',    href: '#about'    },
-  { label: 'Journal',  href: '#journal'  },
-  { label: 'Reach Us', href: '#reach'    },
+  { label: 'Home',     href: '#home'   },
+  { label: 'Studio',   href: '#studio' },
+  { label: 'Reach Us', href: '#reach'  },
 ]
 
 const social = [
@@ -50,7 +47,7 @@ export default function Footer() {
               className="text-3xl text-white tracking-tight"
               style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              Velorah<sup className="text-sm">®</sup>
+              Portfolio
             </a>
             <p
               className="text-sm text-white/60 leading-relaxed max-w-[240px]"

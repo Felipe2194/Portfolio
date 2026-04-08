@@ -27,7 +27,7 @@ export default function Preloader({ isVisible }: PreloaderProps) {
             className="text-5xl tracking-tight text-white"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
-            Velorah<sup className="text-sm">®</sup>
+            Portfolio
           </motion.h1>
 
           {/* Tagline */}
