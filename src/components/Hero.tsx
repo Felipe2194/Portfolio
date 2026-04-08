@@ -135,7 +135,7 @@ export default function Hero({ onBeginJourney }: HeroProps) {
         </motion.div>
 
         <motion.p
-          className="text-xs text-white/50 uppercase tracking-[0.25em] mb-6"
+          className="text-xs text-white/80 uppercase tracking-[0.25em] mb-6"
           style={{ fontFamily: "'Inter', sans-serif" }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -153,11 +153,11 @@ export default function Hero({ onBeginJourney }: HeroProps) {
         >
           Engineering ideas
           <br />
-          <em className="not-italic text-white/50">into digital reality.</em>
+          <em className="not-italic text-white/80">into digital reality.</em>
         </motion.h1>
 
         <motion.p
-          className="text-white/60 text-base sm:text-lg max-w-xl mt-8 leading-relaxed"
+          className="text-white/85 text-base sm:text-lg max-w-xl mt-8 leading-relaxed"
           style={{ fontFamily: "'Inter', sans-serif" }}
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
