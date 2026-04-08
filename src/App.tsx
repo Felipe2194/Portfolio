@@ -6,7 +6,6 @@ import WhySection from './components/WhySection'
 import Services from './components/Services'
 import Studio from './components/Studio'
 import About from './components/About'
-import Packages from './components/Packages'
 import Journal from './components/Journal'
 import ReachUs from './components/ReachUs'
 import Footer from './components/Footer'
@@ -84,11 +83,7 @@ export default function App() {
           <div className="border-t border-white/5" />
           <About />
 
-          {/* ── 7. Packages / Pricing ── */}
-          <div className="border-t border-white/5" />
-          <Packages onContact={scrollToContact} />
-
-          {/* ── 8. Journal ── */}
+          {/* ── 7. Journal ── */}
           <div className="border-t border-white/5" />
           <Journal />
 

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Github, Linkedin } from 'lucide-react'
 import { fadeIn, staggerContainer, viewport } from '../animations'
@@ -18,16 +17,6 @@ const social = [
 ]
 
 export default function Footer() {
-  const [email, setEmail] = useState('')
-  const [sent,  setSent]  = useState(false)
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email.trim()) return
-    setSent(true)
-    setEmail('')
-  }
-
   return (
     <footer className="relative overflow-hidden">
 
@@ -52,7 +41,7 @@ export default function Footer() {
         whileInView="visible"
         viewport={viewport}
       >
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_2.5fr_1.5fr] gap-12 pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1.5fr] gap-12 pb-16">
 
           {/* Col 1: Brand */}
           <motion.div variants={fadeIn} className="flex flex-col gap-5">
@@ -95,48 +84,7 @@ export default function Footer() {
             </ul>
           </motion.div>
 
-          {/* Col 3: Newsletter */}
-          <motion.div variants={fadeIn} className="flex flex-col gap-5">
-            <p
-              className="text-xs text-white/40 uppercase tracking-widest"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Newsletter
-            </p>
-            {sent ? (
-              <p className="text-sm text-white/80" style={{ fontFamily: "'Inter', sans-serif" }}>
-                You're in. I'll be in touch.
-              </p>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2 w-full max-w-sm">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email"
-                  required
-                  className="flex-1 min-w-0 px-4 py-2.5 rounded-full bg-white/10 border border-white/15 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-200"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                />
-                <button
-                  type="submit"
-                  className="shrink-0 px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 active:scale-95 transition-all duration-200"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Subscribe
-                </button>
-              </form>
-            )}
-            <p
-              className="text-xs text-white/40 leading-relaxed max-w-[280px]"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Occasional updates on projects, engineering notes, and things
-              I find worth sharing.
-            </p>
-          </motion.div>
-
-          {/* Col 4: Social */}
+          {/* Col 3: Social */}
           <motion.div variants={fadeIn} className="flex flex-col gap-5">
             <p
               className="text-xs text-white/40 uppercase tracking-widest"
