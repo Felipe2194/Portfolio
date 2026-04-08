@@ -4,7 +4,7 @@ import { fadeIn, staggerContainer, viewport } from '../animations'
 
 const menuLinks = [
   { label: 'Home',     href: '#home'   },
-  { label: 'Studio',   href: '#studio' },
+  { label: 'Projects', href: '#studio' },
   { label: 'Reach Us', href: '#reach'  },
 ]
 

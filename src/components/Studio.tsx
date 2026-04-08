@@ -31,7 +31,7 @@ export default function Studio({ projects, onOpenProject }: StudioProps) {
           className="text-xs text-muted-foreground uppercase tracking-widest mb-4"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          Selected Work
+          My Work
         </motion.p>
         <motion.h2
           variants={fadeRiseChild}
@@ -41,7 +41,7 @@ export default function Studio({ projects, onOpenProject }: StudioProps) {
             letterSpacing: '-1.5px',
           }}
         >
-          Studio
+          Projects
         </motion.h2>
       </motion.div>
 

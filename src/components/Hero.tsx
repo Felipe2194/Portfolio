@@ -151,21 +151,10 @@ export default function Hero({ onBeginJourney }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease, delay: 1.9 }}
         >
-          Engineering ideas
+          Ingeniero Argentino
           <br />
-          <em className="not-italic text-white/80">into digital reality.</em>
+          <em className="not-italic text-white/80">en proceso.</em>
         </motion.h1>
-
-        <motion.p
-          className="text-white/85 text-base sm:text-lg max-w-xl mt-8 leading-relaxed"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease, delay: 2.05 }}
-        >
-          Systems Engineer focused on building interfaces and software
-          with precision, clean architecture, and genuine attention to craft.
-        </motion.p>
 
         <motion.button
           onClick={onBeginJourney}

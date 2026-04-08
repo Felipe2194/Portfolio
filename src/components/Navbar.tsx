@@ -8,7 +8,7 @@ interface NavbarProps {
 
 const navLinks = [
   { label: 'Home', href: '#home' },
-  { label: 'Studio', href: '#studio' },
+  { label: 'Projects', href: '#studio' },
   { label: 'Reach Us', href: '#reach' },
 ]
 
@@ -75,19 +75,6 @@ export default function Navbar({ onStudio }: NavbarProps) {
           ))}
         </ul>
 
-        {/* CTA */}
-        <motion.a
-          href="#reach"
-          className="liquid-glass rounded-full px-6 py-2.5 text-sm text-foreground cursor-pointer"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, ease, delay: 2.4 }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          Hire Me
-        </motion.a>
       </div>
     </motion.nav>
   )

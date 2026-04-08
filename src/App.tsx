@@ -8,7 +8,6 @@ import ReachUs from './components/ReachUs'
 import Footer from './components/Footer'
 import ProjectModal from './components/ProjectModal'
 import Preloader from './components/Preloader'
-import FloatingWidget from './components/FloatingWidget'
 import { Project } from './types'
 
 const projects: Project[] = [
@@ -85,9 +84,6 @@ export default function App() {
           {/* ── 10. Footer ── */}
           <Footer />
         </div>
-
-        {/* ── Floating contact widget ── */}
-        <FloatingWidget />
 
         {/* ── Project Modal ── */}
         <ProjectModal
