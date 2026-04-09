@@ -26,7 +26,7 @@ const packages: PackageItem[] = [
     tagline: 'One deliverable, done right.',
     highlight: false,
     features: [
-      'Landing page or micrositio',
+      'Landing page or microsite',
       'UI design + full development',
       'Mobile-first & responsive',
       '1 revision round',
