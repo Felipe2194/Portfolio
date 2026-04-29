@@ -73,6 +73,20 @@ export default function Navbar({ onStudio }: NavbarProps) {
               </a>
             </motion.li>
           ))}
+          <motion.li
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease, delay: 2.1 + navLinks.length * 0.05 }}
+          >
+            <a
+              href="/CV-Felipe-Giovanardi-Blanco.pdf"
+              download="CV-Felipe-Giovanardi-Blanco.pdf"
+              className="text-sm px-4 py-1.5 rounded-full border border-foreground/20 text-foreground/80 hover:border-foreground/50 hover:text-foreground transition-all duration-200"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Download CV
+            </a>
+          </motion.li>
         </ul>
 
       </div>
